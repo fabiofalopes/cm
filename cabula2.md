@@ -47,12 +47,29 @@ XML → 1.Raiz → 2.Tags → 3.Atributos → 4.Arrays → JSON
 
 ## **PARTE 2: CALLBACKS & PADRÕES (2 valores)**
 
-### **Padrão: Injeção Dependências + Observer**
-- **Contadores** recebe callbacks via construtor → **desacoplamento**
-- Estado muda → chama callbacks → notifica observadores
-- **Benefício:** Testável (pode injetar mocks)
+### **A) Padrão Observer/Observable**
+- **Conceito Base:** Separação entre objeto observado (Observable) e observadores (Observers)
+- **Em Flutter:** 
+  - Observable = `ChangeNotifier`
+  - Observer = `Consumer` ou `context.watch<T>()`
+  - Notificação = `notifyListeners()`
+- **Benefícios:**
+  - Desacoplamento entre UI e lógica de negócio
+  - Múltiplos observadores do mesmo estado
+  - UI atualiza automaticamente (sem `setState`)
+  - Testabilidade melhorada
 
-### **Rastreamento Estado (Exemplo Aula 13):**
+### **B) Injeção de Dependências**
+- **Conceito:** Fornecer dependências via construtor (não criar internamente)
+- **Em Flutter:** 
+  - `Provider` para injeção básica
+  - `ChangeNotifierProvider` para objetos observáveis
+- **Benefícios:**
+  - Desacoplamento entre componentes
+  - Facilita testes (mocks)
+  - Melhor manutenibilidade
+
+### **C) Rastreamento Estado (Exemplo Aula 13):**
 
 | Linha | Ação | Callback | `_x` | `_y` | Output |
 |:------|:-----|:---------|:-----|:-----|:-------|
@@ -64,13 +81,135 @@ XML → 1.Raiz → 2.Tags → 3.Atributos → 4.Arrays → JSON
 
 **OUTPUT FINAL:** `5`, `13`, `7`
 
-### **Diagrama Observer/Observable:**
+### **D) Diagrama Observer/Observable:**
 ```
-[Observable] --notify--> [Observer1: UI Update]
-     |                   [Observer2: Log/Debug]  
-     |                   [Observer3: Persistence]
+[Observable/ChangeNotifier] --notifyListeners()--> [Observer1: UI Update]
+     |                                      [Observer2: Log/Debug]  
+     |                                      [Observer3: Persistence]
 [State Change]
 ```
+
+### **E) Exemplo Prático Flutter:**
+```dart
+// Observable
+class Counter extends ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+  
+  void increment() {
+    _count++;
+    notifyListeners();  // Notifica observers
+  }
+}
+
+// Observer (Widget)
+class CounterWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Observa mudanças no Counter
+    final counter = context.watch<Counter>();
+    return Text('Count: ${counter.count}');
+  }
+}
+```
+
+### **F) Padrão Repository (Offline-First):**
+```
+[UI] → [Repository] → {Online? → API Remote
+                      Offline? → Cache Local}
+```
+- **Benefícios:**
+  - Abstração fonte de dados
+  - Suporte offline
+  - Cache inteligente
+  - Testabilidade
+
+### **G) Checklist para Exame:**
+1. **Identificar Padrões:**
+   - Observer/Observable para UI updates
+   - Injeção Dependências para desacoplamento
+   - Repository para dados
+
+2. **Rastrear Estado:**
+   - Seguir ordem execução callbacks
+   - Calcular estado após cada operação
+   - Verificar outputs de prints
+
+3. **Avaliar Arquitetura:**
+   - Separação UI/Lógica
+   - Testabilidade
+   - Manutenibilidade
+
+### **H) Exemplos Adicionais:**
+
+#### **1. Navegação com ViewModel:**
+```dart
+class MainPageViewModel extends ChangeNotifier {
+  int _selectedIndex = 0;
+  int get selectedIndex => _selectedIndex;
+  
+  void navigateTo(int index) {
+    _selectedIndex = index;
+    notifyListeners();
+  }
+}
+
+// Uso no widget
+final viewModel = context.watch<MainPageViewModel>();
+// ou
+final viewModel = context.read<MainPageViewModel>();
+```
+
+#### **2. Repository com Offline Support:**
+```dart
+class DataRepository {
+  final ApiService _api;
+  final LocalStorage _storage;
+  
+  Future<Data> getData() async {
+    if (await _isOnline()) {
+      final data = await _api.fetchData();
+      await _storage.save(data);
+      return data;
+    }
+    return _storage.getData();
+  }
+}
+```
+
+### **I) Dicas para Exame:**
+1. **Observer/Observable:**
+   - Lembre-se: `ChangeNotifier` = Observable
+   - `context.watch<T>()` = Observer
+   - `notifyListeners()` = Notificação
+
+2. **Injeção Dependências:**
+   - `Provider` para objetos simples
+   - `ChangeNotifierProvider` para observáveis
+   - `context.read<T>()` para acesso único
+   - `context.watch<T>()` para observação contínua
+
+3. **Repository:**
+   - Abstrai fonte de dados
+   - Gerencia estado online/offline
+   - Implementa cache
+   - Facilita testes
+
+### **J) Casos de Uso Comuns:**
+1. **UI Updates:**
+   - Contadores
+   - Formulários
+   - Listas dinâmicas
+
+2. **Navegação:**
+   - Bottom Navigation
+   - Drawer
+   - Tabs
+
+3. **Dados:**
+   - API calls
+   - Cache local
+   - Sincronização
 
 ---
 

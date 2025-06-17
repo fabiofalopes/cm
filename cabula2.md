@@ -362,97 +362,97 @@ Observable → notifyListeners() → Observer1,2,3... → Actions
 *Visualização do processo mental de conversão XML para JSON em 4 passos*
 
 ```mermaid
-graph TD
-    A["XML"] --> B["1. Elemento Raiz\nTag principal vira\nchave de topo"]
-    B --> C["2. Tags para Chaves\nTag filha = chave JSON\nConteúdo = valor"]
-    C --> D["3. Atributos\natributo='valor'\nvira 'chave': 'valor'"]
-    D --> E["4. Listas/Arrays\nTags repetidas\nviram array []"]
-    E --> F["JSON"]
+flowchart TD
+    A[XML] --> B[1. Elemento Raiz\nTag principal vira\nchave de topo]
+    B --> C[2. Tags para Chaves\nTag filha = chave JSON\nConteúdo = valor]
+    C --> D[3. Atributos\natributo='valor'\nvira 'chave': 'valor']
+    D --> E[4. Listas/Arrays\nTags repetidas\nviram array []]
+    E --> F[JSON]
 
-    style A fill:#ff9999
-    style F fill:#99ff99
-    style B fill:#ffcc99
-    style C fill:#ffcc99
-    style D fill:#ffcc99
-    style E fill:#ffcc99
+    style A fill:#e6e6e6
+    style F fill:#d4edda
+    style B fill:#f8f9fa
+    style C fill:#f8f9fa
+    style D fill:#f8f9fa
+    style E fill:#f8f9fa
 ```
 
 ## **Diagrama 2: Arquiteturas de Aplicações Móveis (Parte 4-A)**
 *Comparação visual entre diferentes arquiteturas de desenvolvimento móvel*
 
 ```mermaid
-graph TD
-    A["App"] --> B["Híbrida-Nativa<br/>(Flutter)"]
-    A --> C["Híbrida-Web<br/>(Ionic/Cordova)"]
-    A --> D["Nativa<br/>(Kotlin/Swift)"]
-    A --> E["PWA<br/>(Progressive Web)"]
+flowchart TD
+    A[App] --> B[Híbrida-Nativa<br/>(Flutter)]
+    A --> C[Híbrida-Web<br/>(Ionic/Cordova)]
+    A --> D[Nativa<br/>(Kotlin/Swift)]
+    A --> E[PWA<br/>(Progressive Web)]
     
-    B --> B1["Dart Code"]
-    B1 --> B2["Bridge"]
-    B2 --> B3["UI Nativa"]
+    B --> B1[Dart Code]
+    B1 --> B2[Bridge]
+    B2 --> B3[UI Nativa]
     
-    C --> C1["HTML/JS/CSS"]
-    C1 --> C2["WebView"]
+    C --> C1[HTML/JS/CSS]
+    C1 --> C2[WebView]
     
-    D --> D1["Platform APIs"]
-    D1 --> D2["Native UI"]
+    D --> D1[Platform APIs]
+    D1 --> D2[Native UI]
     
-    E --> E1["Service Worker"]
-    E --> E2["Web Manifest"]
-    E --> E3["Installable"]
+    E --> E1[Service Worker]
+    E --> E2[Web Manifest]
+    E --> E3[Installable]
     
-    style B fill:#99ff99
-    style C fill:#ffcc99
-    style D fill:#ff9999
-    style E fill:#99ccff
+    style B fill:#d4edda
+    style C fill:#f8f9fa
+    style D fill:#e6e6e6
+    style E fill:#e2e3e5
 ```
 
 ## **Diagrama 3: Padrão Repository & Estratégia Offline-First (Parte 3-D & 4-C)**
 *Fluxo de decisão para obtenção de dados: API remota vs cache local*
 
 ```mermaid
-graph LR
-    A["App"] --> B["Repository"]
-    B --> C1["API Remote<br/>(HTTP)"]
-    B --> C2["Cache Local<br/>(SQLite/SharedPrefs)"]
+flowchart LR
+    A[App] --> B[Repository]
+    B --> C1[API Remote<br/>(HTTP)]
+    B --> C2[Cache Local<br/>(SQLite/SharedPrefs)]
     
-    D["UI"] --> B
+    D[UI] --> B
     
-    B --> E{"Online?"}
+    B --> E{Online?}
     E -->|Yes| C1
     E -->|No| C2
     
-    C1 --> F["Sync to Cache"]
+    C1 --> F[Sync to Cache]
     
-    style B fill:#ffcc99
-    style C1 fill:#ff9999
-    style C2 fill:#99ff99
-    style D fill:#99ccff
+    style B fill:#f8f9fa
+    style C1 fill:#e6e6e6
+    style C2 fill:#d4edda
+    style D fill:#e2e3e5
 ```
 
 ## **Diagrama 4: Sistema de Layout Flutter (Parte 3-B)**
 *Estrutura hierárquica dos widgets de layout e gestão de espaço*
 
 ```mermaid
-graph TD
-    A["Flutter Layout"] --> B["Column<br/>(Vertical)"]
-    A --> C["Row<br/>(Horizontal)"]
+flowchart TD
+    A[Flutter Layout] --> B[Column<br/>(Vertical)]
+    A --> C[Row<br/>(Horizontal)]
     
-    B --> B1["mainAxisAlignment<br/>(Vertical spacing)"]
-    B --> B2["crossAxisAlignment<br/>(Horizontal alignment)"]
+    B --> B1[mainAxisAlignment<br/>(Vertical spacing)]
+    B --> B2[crossAxisAlignment<br/>(Horizontal alignment)]
     
-    C --> C1["mainAxisAlignment<br/>(Horizontal spacing)"]
-    C --> C2["crossAxisAlignment<br/>(Vertical alignment)"]
+    C --> C1[mainAxisAlignment<br/>(Horizontal spacing)]
+    C --> C2[crossAxisAlignment<br/>(Vertical alignment)]
     
-    D["Space Management"] --> E["Expanded<br/>(Forces space fill)"]
-    D --> F["Flexible<br/>(Allows space fill)"]
-    D --> G["Spacer<br/>(Invisible space)"]
+    D[Space Management] --> E[Expanded<br/>(Forces space fill)]
+    D --> F[Flexible<br/>(Allows space fill)]
+    D --> G[Spacer<br/>(Invisible space)]
     
-    style A fill:#ffcc99
-    style B fill:#99ccff
-    style C fill:#99ccff
-    style E fill:#99ff99
-    style F fill:#ffff99
-    style G fill:#ff9999
+    style A fill:#f8f9fa
+    style B fill:#e2e3e5
+    style C fill:#e2e3e5
+    style E fill:#d4edda
+    style F fill:#f8f9fa
+    style G fill:#e6e6e6
 ```
 

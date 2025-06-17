@@ -363,12 +363,12 @@ Observable → notifyListeners() → Observer1,2,3... → Actions
 
 ```mermaid
 graph TD
-    A["XML"] --> B["1. Elemento Raiz<br/>Tag principal vira<br/>chave de topo"]
-    B --> C["2. Tags para Chaves<br/>Tag filha = chave JSON<br/>Conteúdo = valor"]
-    C --> D["3. Atributos<br/>atributo='valor'<br/>vira 'chave': 'valor'"]
-    D --> E["4. Listas/Arrays<br/>Tags repetidas<br/>viram array []"]
+    A["XML"] --> B["1. Elemento Raiz\nTag principal vira\nchave de topo"]
+    B --> C["2. Tags para Chaves\nTag filha = chave JSON\nConteúdo = valor"]
+    C --> D["3. Atributos\natributo='valor'\nvira 'chave': 'valor'"]
+    D --> E["4. Listas/Arrays\nTags repetidas\nviram array []"]
     E --> F["JSON"]
-    
+
     style A fill:#ff9999
     style F fill:#99ff99
     style B fill:#ffcc99

@@ -363,10 +363,10 @@ Observable → notifyListeners() → Observer1,2,3... → Actions
 
 ```mermaid
 flowchart TD
-    A[XML] --> B[1. Elemento Raiz\nTag principal vira\nchave de topo]
-    B --> C[2. Tags para Chaves\nTag filha = chave JSON\nConteúdo = valor]
-    C --> D[3. Atributos\natributo='valor'\nvira 'chave': 'valor']
-    D --> E[4. Listas/Arrays\nTags repetidas\nviram array []]
+    A[XML] --> B[1. Elemento Raiz]
+    B --> C[2. Tags para Chaves]
+    C --> D[3. Atributos]
+    D --> E[4. Listas/Arrays]
     E --> F[JSON]
 
     style A fill:#e6e6e6
@@ -382,10 +382,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[App] --> B[Híbrida-Nativa<br/>(Flutter)]
-    A --> C[Híbrida-Web<br/>(Ionic/Cordova)]
-    A --> D[Nativa<br/>(Kotlin/Swift)]
-    A --> E[PWA<br/>(Progressive Web)]
+    A[App] --> B[Híbrida-Nativa]
+    A --> C[Híbrida-Web]
+    A --> D[Nativa]
+    A --> E[PWA]
     
     B --> B1[Dart Code]
     B1 --> B2[Bridge]
@@ -413,8 +413,8 @@ flowchart TD
 ```mermaid
 flowchart LR
     A[App] --> B[Repository]
-    B --> C1[API Remote<br/>(HTTP)]
-    B --> C2[Cache Local<br/>(SQLite/SharedPrefs)]
+    B --> C1[API Remote]
+    B --> C2[Cache Local]
     
     D[UI] --> B
     
@@ -435,18 +435,18 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Flutter Layout] --> B[Column<br/>(Vertical)]
-    A --> C[Row<br/>(Horizontal)]
+    A[Flutter Layout] --> B[Column]
+    A --> C[Row]
     
-    B --> B1[mainAxisAlignment<br/>(Vertical spacing)]
-    B --> B2[crossAxisAlignment<br/>(Horizontal alignment)]
+    B --> B1[mainAxisAlignment]
+    B --> B2[crossAxisAlignment]
     
-    C --> C1[mainAxisAlignment<br/>(Horizontal spacing)]
-    C --> C2[crossAxisAlignment<br/>(Vertical alignment)]
+    C --> C1[mainAxisAlignment]
+    C --> C2[crossAxisAlignment]
     
-    D[Space Management] --> E[Expanded<br/>(Forces space fill)]
-    D --> F[Flexible<br/>(Allows space fill)]
-    D --> G[Spacer<br/>(Invisible space)]
+    D[Space Management] --> E[Expanded]
+    D --> F[Flexible]
+    D --> G[Spacer]
     
     style A fill:#f8f9fa
     style B fill:#e2e3e5

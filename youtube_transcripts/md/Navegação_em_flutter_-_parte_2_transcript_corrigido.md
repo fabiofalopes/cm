@@ -1,0 +1,35 @@
+# Navegação em Flutter - parte 2
+
+Neste vídeo vamos melhorar a nossa aplicação de navegação de forma a separar mais claramente aquilo que é o estado da navegação da apresentação da navegação e vamos conseguir fazer isto usando o padrão observer observable. Ou se quiserem o Change notifier que já foi apresentado noutro vídeo e isso vai nos permitir também na página dois colocar aqui um botão que nos permite ao selecionar esse botão saltar diretamente para a página um de forma muito fácil.
+
+Primeira coisa que vou fazer é extrair esta informação que no fundo representa o estado da navegação. Qual a página que estou a mostrar neste momento para uma classe própria? Quando nós extraímos informação que tem a ver com a lógica de apresentação normalmente nós chamamos a isso um View Model. O Model são as classes que representam a lógica de negócio, View Model as classes que representam a lógica de apresentação.
+
+Então vou criar aqui uma classe Main page View Model. Notem que eu estou a criar próprio ficheiro porque há uma ligação muito próxima entre este Main page Model e o Main page, mas numa arquitetura mais complexa possivelmente vocês quererão extrair esta classe para o seu próprio ficheiro.
+
+Vamos então passar para aqui o selected index e vamos criar getters e setters para o selected index. Agora para isto funcionar corretamente dá-me jeito que este View Model seja observável. Eu quero poder observar e perceber se este selected index mudou e ser avisado por isso. E para isso vou usar o padrão observer observable que em Flutter se implementa com o Change notifier.
+
+Ao usar este Change notifier eu tenho que avisar os meus listeners, quem me está a observar, quando o meu estado muda. Neste caso o meu estado muda nesta, neste Setter e por isso eu vou chamar notify listeners. Assim qualquer objeto, qualquer widget que esteja a observar este View Model será avisado quando mudar este selected index que no fundo significa que ele ou carregou aqui ou carregou aqui.
+
+Agora próximo passo é usar aqui o provider como vimos no outro vídeo para obter este Main page View Model. Ou seja, eu quero injetar esta dependência aqui dentro do Main Page. Para isso vamos começar por vir aqui ao Pub e acrescentar este provider que aqui está. Depois disso não se esqueçam de fazer pub get sempre que fazem aqui uma alteração neste ficheiro.
+
+E depois disso vamos então fazer aqui um wrap do My app num provider. Neste caso tem que ser um Change notifier provider e temos que acrescentar este Create que basicamente cria o objeto que nós vamos providenciar, propagar, injetar se quiserem na my app e em todos os seus descendentes. Eu vou desta vez usar este formato para devolver diretamente um Main page View Model.
+
+A partir deste momento em qualquer widget dentro do My app ou descendentes do My app eu posso aceder a este mainpage View Model através do context. Por exemplo, aqui neste método build eu posso fazer um final View Model igual a context Read Main page View Model. Falta importar o package, mas na realidade o que eu quero não é bem fazer um read, o que eu quero é fazer um watch. Porquê? Porque eu quero que este Main page seja refrescado, seja redesenhado, ou seja, o build seja chamado novamente de cada vez que o estado deste View Model mudar e por isso eu vou mudar isto para watch.
+
+Ok, agora que temos um View Model podemos usá-lo para substituir isto. O que eu quero aqui é o View Model ponto selected index. Vamos fazer o mesmo aqui e vamos fazer o mesmo aqui. Notem que eu aqui estou a alterar o selected index, ou seja, estou a chamar o Setter e por isso ao chamar o Setter eu vou chamar notify listeners. O que quer dizer que eu deixo de precisar deste set State porque de cada vez que houver uma alteração do estado do View Model graças a este watch este componente, este widget vai ser redesenhado.
+
+Vamos já testar se isto está a funcionar. Ok, isto continua a funcionar apesar da gente ter tirado o set state porque agora o observer observable garante que o page, o Main page é notificado cada vez que é alterado o estado da navegação e eu passei a estar a ter isolado esse estado nesta classe.
+
+Isto pode parecer uma mariquice. Nós estamos a isolar este estado, porque é que estamos a complicar no fundo esta classe que antes estava a funcionar tão bem apenas aqui com uma variável? Porque isto abre a porta a uma série de comportamentos que depois ficam muito fáceis de implementar.
+
+Imaginem que eu queria implementar na página dois aqui um botão que ao carregar nele ele salta diretamente para a página um. Como é que a gente faz isso? Vamos acrescentar aqui um elevated Button ok que tem estas duas propriedades. Para já não vou me preocupar com o On pressed e no child vou colocar um text saltar para página um.
+
+Claro que neste momento isto não funciona. O que é que a gente tem que fazer neste onpressed? Se não fosse aquele objeto está extraído eu ia ter muita dificuldade em conseguir saltar porquê? Porque eu não tenho dentro desta página, não teria acesso do, não é, quando ele tinha uma variável select index eu não tinha maneira de aceder lá, portanto seria complexo eu chegar lá.
+
+Agora que tenho por um lado injeção de dependências e por outro observer observable isto fica mais simples. Primeira coisa é eu tenho que obter aquele isso através de injeção de dependências usando o provider. É muito simples, é só fazer Context, dizer que queremos um Main page View Model ponto selected index igual a 0. Vamos mudar isto para uma expressão, vamos formatar isto.
+
+Então reparem o que é que eu estou aqui a fazer. Eu estou por um lado a obter o Main page View Model através da injeção de dependências e depois estou a dizer que o seu selected index passa a ser zero. Eu estou a alterar o selected index. Basta-me fazer isto porque isto vai notificar toda a gente que estiver interessada em saber que o estado do Main page View Model mudou. Uma dessas, um desses observadores é nomeadamente o Main page que vai tratar de atualizar isto.
+
+Então vamos alterar isto e cá está ele a saltar para a página um enquanto que se for por aqui continua a funcionar, mas assim também funciona.
+
+Em resumo, muitas vezes parece exagerado nós estarmos a usar injeção de dependências e o padrão observer observable para resolver pequenos casos que aparecem na nossa aplicação, mas a verdade é que quando nós desenvolvemos as nossas aplicações desta forma elas, a manutenção futura é muito facilitada porque em qualquer momento nós temos uma separação clara entre a interface e o estado da interface ou o estado de negócio dependendo dos casos. E portanto através da injeção de dependências eu rapidamente consigo aceder a esse estado e alterá-lo e através do observer observable todos os widgets que precisarem se refrescar com base na mudança desse estado serão avisados e serão refrescados. 

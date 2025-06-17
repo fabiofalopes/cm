@@ -1,0 +1,83 @@
+# Desenvolvimento com widgets em Flutter - Testes de integração e injeção de dependências Provider
+
+Neste vídeo vamos continuar a melhorar o nosso controlador de ar condicionado. Vamos introduzir o conceito de testes de integração que são testes um bocadinho diferentes dos testes unitários que apresentamos no vídeo anterior. E a propósito dos testes de integração vamos também introduzir um conceito muito importante chamado injeção de dependências.
+
+Vamos então começar pelos testes de integração. Os testes de integração são diferentes destes testes que são os testes unitários no sentido em que, em vez de estarem apenas um componente, uma classe e normalmente não tem ligação à interface gráfica - estamos a falar de testar diretamente um objeto sem passar pela interface gráfica - no caso dos testes de integração nós vamos simular ações sobre uma aplicação que está mesmo a correr no telemóvel. Ou seja, os testes de integração implicam que ele arranque um emulador e a seguir simule ações sobre a aplicação que vai aparecendo no emulador e verifique se o resultado é o esperado.
+
+Vamos começar por criar aqui uma pasta chamada integration test para que ele, o Android Studio, perceba que isto é uma classe de teste. E agora vamos também chamar um criar um ficheiro chamado integration test. Ok, isto poderíamos ir buscar aqui estes testes e fazer uma coisa parecida, mas em realidade os nossos testes de integração vão ser um bocadinho diferentes. Vão ter a mesma o main até aqui tudo bem, mas agora vou ter algumas diferenças relativamente aos testes que já tínhamos visto aqui neste, nesta, neste vídeo.
+
+A primeira diferença é que tem que incluir na configuração do projeto quer usar uma biblioteca para testes de integração. Eu vou incluir estas linhas aqui no meu pubspec.yaml e fazer pub get para ele obter essa dependência. Feito isso, eu posso começar por chamar esta linha, importá-la, que basicamente é essencial no início de cada teste de integração para garantir que todos os widgets estão bem inicializados para se poderem então fazer os testes.
+
+O teste em si, em vez de usar o teste, eu vou usar o testWidgets. Vou-lhe passar à mesma uma descrição - neste caso vamos testar que diminuindo a temperatura ele reflete isso na temperatura. E agora temos aqui uma novidade que é ele recebe aqui uma variável chamada WidgetTester e a seguir chama um código com esse WidgetTester que vai testar, digamos assim, o widget, os widgets que pretendemos.
+
+Vamos começar por converter isto para bloco de código. Vamos mudar isto para test só para ficar mais pequeno e aqui dentro é onde eu vou testar então a, o este, este cenário. Estes testes têm que ter aqui uma palavrinha async porque são testados de forma assíncrona.
+
+E a primeira coisa que eu tenho que fazer aqui é chamar a aplicação propriamente dita. Como é que eu vou fazer isso num teste de integração? Vamos começar por olhar aqui para o main e a minha, a minha função main chama o runApp com o MyApp. O que é que é o MyApp? É um widget que basicamente tem lá toda a minha aplicação através dos widgets que eu depois vou incluindo.
+
+Eu aqui vou fazer o mesmo, mas em vez de chamar runApp vou chamar o tester.pumpWidget(MyApp()). Falta importar. Vou ter apenas que fazer aqui uma pequena alteração que é eu vou ter que usar esta palavrinha await no início para indicar que ele tem que esperar que ele, que o tester faça pump, digamos assim, deste widget. Ou seja, que execute este widget e que ele esteja presente no ecrã pronto a ser utilizado para a seguir eu continuar.
+
+Vamos já correr isto para ver o que acontece. Peço-vos que prestem atenção agora o que vai acontecer aqui. Ok, viram? Test starting, depois apareceu o ecrã durante muito rapidamente, menos de 1 segundo, e logo a seguir terminou. Ele diz que o teste passou. Ok, mas a gente na realidade não está ainda a testar nada.
+
+O que é que falta aqui? Faltam os expects. Eu tenho que testar que ele está a ter o comportamento correto e não apenas que está a executar. Para isso, o que é que eu quero testar? Neste caso vou começar por testar que a temperatura que é mostrada logo quando arrancamos a aplicação é temperatura 25.
+
+Para isso eu tenho que obter, digamos, o widget que apresenta essa informação. E para isso eu devo ter uma chave associada a esse widget. Eu já tenho aqui uma chave, se repararem aqui, associada a este widget que é o que apresenta a temperatura. Chama-se temperaturaTextKey. Esta indicação, esta string aqui está, convém que seja única. Se vocês tiverem vários widgets com a mesma chave, ele depois não sabe procurá-lo, não sabe identificar o correto.
+
+E eu além disso também já fiz aqui uma alteração que é aqui nos botões. Se repararem, eles também passaram a ter uma key aqui. Ok, o TextButton com o menos e o mais, e eu atribuí o valor diminuiButton - a chave diminuiButton ao quando é o menos, e quando é o mais chama-lhe aumentaButton. Reparem que este key aqui existem todos os widgets, portanto qualquer widget Flutter vocês podem associar um key para depois poderem nos testes referenciar.
+
+Como é que a gente vai referenciar esta key? Vamos usar uma variável find que existe automaticamente quando nós usamos a função testWidgets e chamamos o byKey. E aqui se lhe passarmos uma Key tem que ser um objeto do tipo Key com o mesmo identificador que nós usamos no código, claro. Ok, ele neste caso ele vai encontrar uma, vai encontrar o nosso widget que a gente quer. Chamar a isto temperaturaTextFinder, ou seja, isto vai é o, digamos, o objeto responsável por encontrar o widget com esta chave.
+
+Nós podemos encontrar o widget por várias formas. Neste caso vamos usar por chave, que é a forma que eu recomendo. E agora vamos para já verificar que este Finder só encontra um widget e apenas um - encontra um e apenas um widget. Ok, este é o nosso primeiro expect. É uma prática começamos para verificar se realmente existe este widget antes de tentarmos ver qual é o seu valor.
+
+Agora nós queremos ver se dentro deste widget está contido do texto que nos interessa. Ora bem, para isso nós vamos usar o tester.widget e vamos passar-lhe o temperaturaTextFinder. O que é que isto retorna? Isto retorna o widget que está, que foi retornado por este Finder. Digamos assim, o Finder não retorna diretamente um widget, mas através deste tester.widget a gente consegue obter o widget respetivo. Ou seja, na realidade a gente vai chamar a isto temperaturaTextWidget. Ok, isto é o widget, é este widget. Ok, é este que aqui está, aqui está ele. Ok, este widget que aqui está vai ser o que ele vai retornar aqui nesta variável.
+
+Ora, tendo este widget, eu vou ter acesso ao seu valor e posso fazer um expect temperaturaTextWidget.data - esperem, eu aqui tenho que mudar aqui uma coisa. Isto não pode ser só assim, eu tenho que dizer isto é do tipo Text. Vamos importar para que ele aqui possa ter aqui um data que é o que me interessa. É a forma de eu dentro de um widget do tipo Text obter o valor que lá está dentro. E agora aqui coloco diretamente o valor que eu estava à espera de encontrar.
+
+Vamos começar por pôr um valor inválido. Ou seja, eu acho que ele vai apresentar a temperatura 20. Na realidade a gente sabe que ele vai apresentar a temperatura 25, portanto este teste deverá falhar. Vamos tentar correr. De facto, o teste falhou e bem, e ele até inclusivamente disse que ele estava à espera temperatura 20 e o que apareceu foi temperatura 25. Portanto ele está a funcionar como era suposto. Portanto se eu agora meter aqui 25, ele já deverá passar.
+
+O teste, mas o teste não termina por aqui. Eu agora quero simular o carregar no botão menos e a temperatura deverá passar aí sim a 24. Para isso eu vou fazer, vou usar uma novamente um Finder, mas agora é do diminuiButton. E aqui vai ser o diminuiButton. Tenho um novo Finder para o meu botão.
+
+Como mandam as boas práticas, eu devo começar por verificar se existe um widget com esta chave. E de seguida vou simular um toque nesse botão, e isso é feito através do tester.tap. Passo o diminuiButtonFinder. Este tester.tap tem um efeito sobre o ecrã. Todos os, todas as ações que eu faço com o tester que podem ter efeito sobre o ecrã, como elas demoram algum tempo, eu tenho que fazer um await antes disso. Tenho que colocar aqui um await. Não tenho que fazer isso nos expects, mas tenho que fazer nos testers que mudam o ecrã.
+
+Além disso, eu tenho que fazer uma coisa que é fazer um tester.pump. O que isto significa é: após fazeres o tap do diminuiButtonFinder, faz um refresh ao ecrã para que ele volte a reconstruir o ecrã tendo em conta a reação a este botão. Se quiserem, isto é o equivalente a chamar o build novamente de todos os widgets que estão envolvidos no ecrã.
+
+Posso ir buscar novamente este widget que aqui está. Eu vou ter que ir buscar novamente, portanto eu vou tirar aqui o final para poder modificar esta variável e vou copiar para aqui. E agora isto em princípio vai ficar com temperatura 24.
+
+Viram ali muito rapidamente este teste a ser simulado, inclusivamente aqui a indicação do que aconteceu? Ele começou por desenhar o ecrã, desenhar, atual, carregou menos, a temperatura passou a 24, voltou a desenhar o ecrã, e eu confirmei aqui que de facto este temperaturaTextWidget tinha agora o temperatura 24. Temos então o nosso teste de integração criado.
+
+Bem, isto parece tudo muito bem, mas este teste tem um problema. Este teste depende do facto da temperatura ser inicializada a 25. Isso por acaso acontece neste momento porque a gente tem aqui este controladorAC que está inicializado com 25, mas isso mais tarde isto mudar e se isto passar a ser uma coisa dinâmica que vai buscar a última temperatura ou temperatura ambiente, este teste vai deixar de funcionar.
+
+Então nós vamos ter que alterar isto para passar a usar uma técnica chamada injeção de dependências. Para ficar mais claro, deixa, deixa mostrar-vos este diagrama.
+
+Ora bem, temos então o nosso MyApp que através do método build constrói toda a aplicação, em particular constrói o ControladorACWidget que tem uma dependência - vou usar agora essa terminologia - uma dependência deste objeto. Ele precisa deste objeto para quê? Para mostrar a temperatura atual, para aumentar a temperatura e para diminuir. No entanto, ele também cria este objeto, e esse é o problema aqui. Ele não pode criar este objeto.
+
+Quando se fala de injeção dependências, o que se faz, o que se fala é de retirar a instanciação do objeto de dentro destes widgets para passar para fora. Ou seja, quando eu digo passar para fora, refiro-me a estes dois casos: o main.dart vai querer inicializar este objeto de uma forma diferente do integration_test.dart.
+
+Então o que é que temos que fazer? Primeira coisa é para a injeção dependências funcionar é retirar a instanciação do objeto, a criação do objeto aqui dentro. Dentro ele passa a obter esse controlador - já vamos ver como - e portanto ele deixa de, a gente deixa de poder dizer que ele está inicializado a 25º. Nós não sabemos como é que ele foi inicializado, apenas usamos a dependência que nos é injetada.
+
+Como é que é então criada essa dependência? Bem, o main.dart cria essa dependência com uma certa inicialização, neste caso 20 graus. O integration_test cria com outra inicialização. Ambos passam essa informação ao ControladorACWidget e ele limita-se a usar a dependência que lhe foi dada.
+
+Portanto, em resumo, o ControladorACWidget deixa de criar o objeto ControladorAC, passa a receber esse objeto tendo sido criado por outra classe - umas vezes o main.dart, outras vezes o integration_test.dart.
+
+Então como é que isto se vai refletir aqui a nível de código? Para começar, temos que tirar daqui esta instanciação deste objeto. Nós não podemos criar este objeto aqui, ele tem que ser criado no main. Portanto eu vou copiar isto para main, vou tirar isto porque esta variável não precisa de ser private - a gente já vai ver isso - e agora a ideia é que eu passe este controladorAC é MyApp que por sua vez passa ao ControladorACWidget. Passa por aqui fora e eu aqui deixo de criar e ele passa a ser, digamos, obtido a partir daquilo que lhe é dado. Eu para já vou deixar assim porque se eu tirar isto, isto vai deixar de compilar. Já, já vamos, já voltamos aqui.
+
+Eu agora quero falar sobre esta problemática. Esta ideia de passar o objeto através dos vários construtores pode funcionar para aplicações simples, mas para aplicações mais complexas começa a ser complicado quando eu tenho muitos widgets estar permanentemente a passar todos os objetos que eu preciso lá para dentro.
+
+Então nós vamos fazer uso de uma biblioteca externa chamada Provider. Essa biblioteca, para a gente poder usá-la, vamos acrescentar aqui este provider. Não esquecer de fazer pub get sempre que se altera este ficheiro para ele obter a respetiva dependência.
+
+E agora vamos alterar aqui este MyApp para fazer um wrap com um widget chamado Provider. O que este widget vai fazer é providenciar um objeto a todos os descendentes que estão aqui do child. Para já ele está-se a queixar que precisa de um argumento create. Vamos só aqui pôr aqui uma vírgula para poder formatar isto. Pronto.
+
+Então o Provider tem um create e um child. O child é o MyApp, é aquilo que já antes tínhamos, mas eu aqui no create vou poder passar-lhe um objeto que vai ser disponibilizado a todos os descendentes de MyApp. É só isto. Portanto, ao fazer isto, qualquer coisa que eu retorno aqui, qualquer objeto que eu retorno aqui, ele é providenciado. Há uma forma de passar esse objeto para todos os descendentes de MyApp.
+
+Como é que isso é feito? Através desta variável. Ok, esta variável contexto, eu consigo obter o objeto que foi inicializado no Provider. Para isso eu vou alterar isto para: este controladorAC deixa de ser inicializado aqui, passa a ser inicializado aqui. Eu aqui não preciso deste underscore e aqui vou fazer um context.read, só colocar aqui ControladorAC para perceber que o que eu quero obter é um ControladorAC. Isto porque eu posso ter vários objetos, eu posso através do Provider passar vários objetos. Isto deixa, isto desaparece.
+
+Ok, eu obtive o controladorAC, eu deixei de o criar, alguém o criou e eu obtive através desta linha. Eu agora tenho que alterar isto para deixar de ter o underscore. E aqui no buildButton eu tenho aqui referências ao controladorAC e agora sim, estas eu vou passar diretamente ao método. Ou seja, aqui no buildButton eu vou-lhe passar um controladorAC. Aqui também vou dizer que quero um, adicionar este parâmetro, e aqui vou retirar isto tudo.
+
+Pronto, eu basicamente o que é que eu fiz? Só resumindo ainda coisa: aqui no Provider criei o objeto no main, através deste Provider ele chegou ao widget que o queria obter - neste caso era o ControladorACWidget - mas qualquer widget que tenha um build com o contexto pode obter este objeto. E finalmente acedi ao objeto como acedia antes, e no caso do buildButton ainda passei lá para dentro o objeto para que o buildButton pudesse aceder às propriedades do mesmo.
+
+O que é que falta aqui para isto funcionar? Para já eu quero alterar isto para que a temperatura passe a ser 20 agora no main. E vamos alterar o nosso integration test para também usar o Provider. Essa é que é a vantagem, a grande vantagem desta abordagem que estamos a tomar.
+
+Portanto vamos fazer uma coisa. Se calhar até vou copiar daqui que é mais fácil. Vou copiar isto que aqui está e aqui em vez de MyApp vou colocar isto. Ah, falta-me copiar também o controladorAC. Tenho que importar, tenho que importar o Provider. E aqui eu vou colocar 25 porque aqui é o que eu estou à espera. Lembram-se? É o que estou à espera é que o controlador comece com o valor 25.
+
+Mas eu agora fiquei, deixei de estar dependente daquilo que é inicializado no main. No main está inicializado 20, aqui está inicializado 25, e ambos vão funcionar. Vamos só verificar. Vou começar por testar o main. Já está, começa a 20, disparar. E agora vou correr os testes. Reparem o que é que vai aparecer aqui. Viram? 25 e 24.
+
+Aprendemos neste vídeo a criar testes de integração - testes diferentes dos testes unitários no sentido em que testam a aplicação de forma integrada através do emulador e através de interação com a parte gráfica. E aprendemos também que para isso funcionar bem e de forma independente da inicialização da aplicação em si, devemos usar uma técnica chamada injeção de dependências, em que nós inicializamos os objetos do modelo no teste de forma independente dos objetos no main, e eles são passados através do Provider para dentro dos widgets que dele precisam. 

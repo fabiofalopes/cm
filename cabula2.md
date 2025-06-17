@@ -215,14 +215,14 @@ class DataRepository {
 
 ## **PARTE 3: FLUTTER CONCEITOS & CÓDIGO (4 valores)**
 
-### **A) Conceitos (Máx. 50 palavras cada)**
+### **A) Conceitos Essenciais (Máx. 50 palavras cada)**
 
 **StatelessWidget vs StatefulWidget:**
-- **Stateless:** UI estática, imutável (ícones, texto fixo)
-- **Stateful:** UI dinâmica, usa `setState()` para rebuild
-- **DICA EXAME:** UI muda com interação → StatefulWidget
+- **Stateless:** UI imutável, sem estado interno (ícones, textos fixos)
+- **Stateful:** UI mutável, usa `setState()` para atualizar estado
+- **DICA:** UI muda com interação → StatefulWidget
 
-**Injeção Dependências (DI):**
+**Injeção Dependências:**
 - Fornecer dependências via construtor (não criar internamente)
 - **Benefício:** Desacoplamento + testabilidade (mocks)
 - **DICA:** "Trocar implementações p/ testes" → DI
@@ -240,7 +240,7 @@ class DataRepository {
 ### **B) Widgets Fundamentais:**
 
 **Scaffold:** Estrutura base app
-```
+```dart
 Scaffold(
   appBar: AppBar(title: Text("...")),
   body: ...,

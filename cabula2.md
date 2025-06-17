@@ -363,10 +363,10 @@ Observable → notifyListeners() → Observer1,2,3... → Actions
 
 ```mermaid
 flowchart TD
-    A[XML] --> B[1. Elemento Raiz]
-    B --> C[2. Tags para Chaves]
-    C --> D[3. Atributos]
-    D --> E[4. Listas/Arrays]
+    A[XML] --> B[1 Elemento Raiz]
+    B --> C[2 Tags para Chaves]
+    C --> D[3 Atributos]
+    D --> E[4 Listas ou Arrays]
     E --> F[JSON]
 ```
 

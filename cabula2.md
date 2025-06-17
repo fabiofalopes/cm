@@ -293,6 +293,20 @@ class MyHomePage extends StatefulWidget {     // 1
 - **Passar dados:** Via construtor widget destino
 - **Padrões:** BottomNav (persistente), Drawer (transiente)
 
+### **E) Diagrama Autonomia:**
+```mermaid
+graph TD
+    A[Autonomia] --> B[Bateria recarregável]
+    A --> C[Carregamento sem fios]
+    A --> D[Gestão de energia]
+    B --> E[Composição química]
+    B --> F[Capacidade]
+    C --> G[Radiative]
+    C --> H[Non-radiative]
+    D --> I[SO]
+    D --> J[Aplicações]
+```
+
 ---
 
 ## **PARTE 4: COMPUTAÇÃO MÓVEL (12 valores)**

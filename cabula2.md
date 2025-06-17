@@ -368,13 +368,6 @@ flowchart TD
     C --> D[3. Atributos]
     D --> E[4. Listas/Arrays]
     E --> F[JSON]
-
-    style A fill:#e6e6e6
-    style F fill:#d4edda
-    style B fill:#f8f9fa
-    style C fill:#f8f9fa
-    style D fill:#f8f9fa
-    style E fill:#f8f9fa
 ```
 
 ## **Diagrama 2: Arquiteturas de Aplicações Móveis (Parte 4-A)**
